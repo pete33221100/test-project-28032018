@@ -55,22 +55,22 @@ export class ContactItemComponent {
       return;
     }
 
-    // Notfiy user
-    this.snackBar.open('Saved successfully.', null, {
-      duration: 2000
-    });
+    // Update the contact
+    this._contactService.modifyContactTag(this.contact.contactId, tag)
+      .subscribe(() => {
+        // Notfiy user
+        this.snackBar.open('Saved successfully.', null, {
+          duration: 2000
+        });
+      });
 
+    // Customer feedback: do not wait for the request to finish, to improve responsiveness 
     // Update contact card
     if (tag.isSelected) {
       this.contact.tags.push(tag);
     } else {
       this.contact.tags = this.contact.tags.filter(contactTag => contactTag.tagId !== tag.tagId);
     }
-
-    // Update the contact
-    this._contactService.modifyContactTag(this.contact.contactId, tag)
-      .subscribe(() => {
-      });
   }
 
   addCustomTag() {
@@ -107,12 +107,12 @@ export class ContactItemComponent {
 
     // Save the tag
     this._tagService.updateTag(tag.tagId, tag.tagName)
-      .subscribe(updatedTag => {
+      .subscribe(() => {
+        // Notify the user
+        this.snackBar.open('Updated successfully.', null, { duration: 2000 });
       });
 
     // Customer feedback: do not wait for the request to finish, to improve responsiveness      
-    // Notify the user
-    this.snackBar.open('Updated successfully.', null, { duration: 2000 });
     tag.editing = false;
 
     // When a tag name is updated, emit an event to update the name for all contacts
@@ -136,11 +136,11 @@ export class ContactItemComponent {
 
     this._tagService.deleteTag(tag.tagId)
       .subscribe(() => {
+        // Notify the user
+        this.snackBar.open('Deleted successfully.', null, { duration: 2000 });
       });
 
     // Customer feedback: do not wait for the request to finish, to improve responsiveness            
-    // Notify the user
-    this.snackBar.open('Deleted successfully.', null, { duration: 2000 });
     this.tags = this.tags.filter(t => t.tagId !== tag.tagId);
 
     // When a tag name is deleted, emit an event to update the name for all contacts
