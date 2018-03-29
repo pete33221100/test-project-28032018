@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 
 namespace AddressBook.Web
 {
@@ -63,7 +64,13 @@ namespace AddressBook.Web
             app.UseDefaultFiles();
 
             // This will serve js, css, images etc.
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=3600";
+                }
+            });
 
             // This ensures index.html is served for any requests with a path
             // and prevents a 404 when the user refreshes the browser

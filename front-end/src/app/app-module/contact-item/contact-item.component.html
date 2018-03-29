@@ -1,7 +1,7 @@
 <mat-card *ngIf="contact" (click)="selectContact(contact.contactId)" [ngClass]="{'selected-contact': isSelected}">
   <mat-card-title>{{contact.firstName}} {{contact.lastName}}
     <span>{{contact.company}}</span>
-    <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" class="float-right" (click)="getTags($event)">
+    <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" class="float-right" (mouseenter)="getTags($event)" (click)="$event.stopPropagation();">
       <mat-icon>book</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">

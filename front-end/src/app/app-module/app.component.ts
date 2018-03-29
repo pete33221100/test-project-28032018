@@ -132,7 +132,7 @@ export class AppComponent implements OnInit {
       .then(() => console.log('Hub connection started.'));
 
     this._hubConnection.on('Send', (tagId: number, tagName: string) => {
-      this.notifications.unshift(`Tag ${tagName} (${tagId}) added.`);
+      this.notifications.unshift(`Tag ${tagName} was added.`);
       this.trigger.openMenu();
 
       let timer = Observable.timer(5000).subscribe(() => {

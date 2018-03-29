@@ -19,7 +19,7 @@ namespace AddressBook.Web.Controllers
 
         // GET: api/Contacts
         [HttpGet(Name = "GetContacts")]
-        [ResponseCache(VaryByHeader = "User-Agent", Duration = 30)]
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 60)]
         public IActionResult Get([FromQuery]Paging paging)
         {
             var contacts = _contactService.GetAll(paging);
@@ -29,7 +29,7 @@ namespace AddressBook.Web.Controllers
 
         // GET: api/Contacts/5
         [HttpGet("{contactId}", Name = "GetContact")]
-        [ResponseCache(VaryByHeader = "User-Agent", Duration = 30)]
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 60)]
         public IActionResult Get(int contactId)
         {
             var contact = _contactService.GetContactById(contactId);

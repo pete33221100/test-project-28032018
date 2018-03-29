@@ -37,9 +37,6 @@ export class ContactItemComponent {
   }
 
   getTags($event) {
-    // Prevent bubbling
-    $event.stopPropagation();
-
     // Get list of tags
     this._tagService.getTags()
       .subscribe(tags => {
@@ -58,20 +55,21 @@ export class ContactItemComponent {
       return;
     }
 
+    // Notfiy user
+    this.snackBar.open('Saved successfully.', null, {
+      duration: 2000
+    });
+
+    // Update contact card
+    if (tag.isSelected) {
+      this.contact.tags.push(tag);
+    } else {
+      this.contact.tags = this.contact.tags.filter(contactTag => contactTag.tagId !== tag.tagId);
+    }
+
     // Update the contact
     this._contactService.modifyContactTag(this.contact.contactId, tag)
       .subscribe(() => {
-        // Notfiy user
-        this.snackBar.open('Saved successfully.', null, {
-          duration: 2000
-        });
-
-        // Update contact card
-        if (tag.isSelected) {
-          this.contact.tags.push(tag);
-        } else {
-          this.contact.tags = this.contact.tags.filter(contactTag => contactTag.tagId !== tag.tagId);
-        }
       });
   }
 
@@ -86,15 +84,17 @@ export class ContactItemComponent {
     this._tagService.addTag(this.customTagName)
       .subscribe(newTag => {
         //Reset the custom tag field
-        newTag.isSelected = true;
         this.customTagName = undefined;
 
         // Update the tag list for current contact
-        this.contact.tags.push(newTag);
         this.tags.push(newTag);
 
-        // Emit tag added event to parent
+        // Emit tag added event to parent, so that parent makes a call to SignalR
         this.onTagAdded.emit(newTag);
+
+        // Auto select this tag, to save user one click
+        newTag.isSelected = true;
+        this.clickTag(newTag);
       });
   }
 
@@ -108,15 +108,16 @@ export class ContactItemComponent {
     // Save the tag
     this._tagService.updateTag(tag.tagId, tag.tagName)
       .subscribe(updatedTag => {
-        // Notify the user
-        this.snackBar.open('Updated successfully.', null, { duration: 2000 });
-        tag.editing = false;
-
-        // When a tag name is updated, emit an event to update the name for all contacts
-        // without having to reload the contacts
-        this.onTagUpdated.next(tag);
       });
 
+    // Customer feedback: do not wait for the request to finish, to improve responsiveness      
+    // Notify the user
+    this.snackBar.open('Updated successfully.', null, { duration: 2000 });
+    tag.editing = false;
+
+    // When a tag name is updated, emit an event to update the name for all contacts
+    // without having to reload the contacts
+    this.onTagUpdated.next(tag);
   }
 
   confirmDelete(tag: Tag) {
@@ -132,15 +133,18 @@ export class ContactItemComponent {
   }
 
   delete(tag: Tag) {
+
     this._tagService.deleteTag(tag.tagId)
       .subscribe(() => {
-        // Notify the user
-        this.snackBar.open('Deleted successfully.', null, { duration: 2000 });
-        this.tags = this.tags.filter(t => t.tagId !== tag.tagId);
-
-        // When a tag name is deleted, emit an event to update the name for all contacts
-        // without having to reload the contacts
-        this.onTagDeleted.next(tag.tagId);
       });
+
+    // Customer feedback: do not wait for the request to finish, to improve responsiveness            
+    // Notify the user
+    this.snackBar.open('Deleted successfully.', null, { duration: 2000 });
+    this.tags = this.tags.filter(t => t.tagId !== tag.tagId);
+
+    // When a tag name is deleted, emit an event to update the name for all contacts
+    // without having to reload the contacts
+    this.onTagDeleted.next(tag.tagId);
   }
 }
