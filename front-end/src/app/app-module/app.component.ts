@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   notifications: Array<string> = [];
   selectedContactId: number;
 
+  searchTagId: number = 0;
   searchTerm: string = '';
   searchTerm$: Subject<string> = new Subject<string>();
   paginationOptions = Constants.paginationOptions;
@@ -86,8 +87,8 @@ export class AppComponent implements OnInit {
 
   // When user selects an option in auto complete, perform searching
   onSelectAutoComplete(event) {
-    const tagId = event.option.value.tagId;
-    this.search('', tagId);
+    this.searchTagId = event.option.value.tagId;
+    this.search('', this.searchTagId);
   }
 
   // When a contact card is clicked, navigate to that contact

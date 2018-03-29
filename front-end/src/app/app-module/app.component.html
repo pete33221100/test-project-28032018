@@ -46,7 +46,7 @@
             (onTagAdded)="onTagAdded($event)" (onTagUpdated)="onTagUpdated($event)" (onTagDeleted)="onTagDeleted($event)"></app-contact-item>
         </div>
         <mat-paginator [length]="contactList.totalItems" [pageSize]="paginationOptions.itemsPerPage" [pageSizeOptions]="paginationOptions.pageSizeOptions"
-          (page)="search(searchTerm, $event)">
+          (page)="search(searchTerm, searchTagId, $event)">
         </mat-paginator>
       </div>
       <!--End contact card list-->

@@ -5,7 +5,7 @@ export class Constants {
     static hubTags = endpoint + '/hub/tags'
     
     static paginationOptions = {
-        itemsPerPage: 5,
-        pageSizeOptions: [5]
+        itemsPerPage: 15,
+        pageSizeOptions: [15]
     };
 }
