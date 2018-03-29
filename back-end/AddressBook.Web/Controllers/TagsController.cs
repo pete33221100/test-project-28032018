@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AddressBook.Service.BusinessServices;
 using AddressBook.Service.Dtos.In;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +30,9 @@ namespace AddressBook.Web.Controllers
         [HttpGet("{id}", Name = "GetTag")]
         public string Get(int id)
         {
-            return "value";
+            throw new NotImplementedException();
         }
-        
+
         // POST: api/Tags
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]TagInputDto model)
