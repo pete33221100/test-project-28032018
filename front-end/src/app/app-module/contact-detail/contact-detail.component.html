@@ -1,0 +1,13 @@
+<mat-card *ngIf="contact">
+  <mat-card-content>
+    <mat-list role="list">
+      <mat-list-item role="listitem">
+        <mat-card-title>{{contact.firstName}} {{contact.lastName}}</mat-card-title>
+      </mat-list-item>
+      <mat-list-item role="listitem"><strong>Phone:&nbsp;</strong>{{contact.phone}}</mat-list-item>
+      <mat-list-item role="listitem"><strong>Email:&nbsp;</strong>{{contact.email}}</mat-list-item>
+      <mat-list-item role="listitem"><strong>LinkedIn:&nbsp;</strong>{{contact.linkedIn}}</mat-list-item>
+      <mat-list-item role="listitem"><strong>Skype:&nbsp;</strong>{{contact.skype}}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
